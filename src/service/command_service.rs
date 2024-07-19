@@ -35,18 +35,17 @@ impl CommandService for Hset {
 impl CommandService for Hmget {
     fn execute(self, store: &impl Storage) -> CommandResponse {
         let table = self.table;
-        self.keys.into_iter().map(|key| {
-            match store.get(&table, &key) {
+        self.keys
+            .into_iter()
+            .map(|key| match store.get(&table, &key) {
                 Ok(Some(v)) => v,
                 Ok(None) => Value::default(),
                 Err(_) => Value::default(),
-            }
-        })
-        .collect::<Vec<_>>()
-        .into()
+            })
+            .collect::<Vec<_>>()
+            .into()
     }
 }
-
 
 impl CommandService for Hmset {
     fn execute(self, store: &impl Storage) -> CommandResponse {
@@ -80,15 +79,15 @@ impl CommandService for Hdel {
 impl CommandService for Hmdel {
     fn execute(self, store: &impl Storage) -> CommandResponse {
         let table = self.table;
-        self.keys.into_iter().map(|key| {
-            match store.del(&table, &key) {
+        self.keys
+            .into_iter()
+            .map(|key| match store.del(&table, &key) {
                 Ok(Some(v)) => v,
                 Ok(None) => Value::default(),
                 Err(_) => Value::default(),
-            }
-        })
-        .collect::<Vec<_>>()
-        .into()
+            })
+            .collect::<Vec<_>>()
+            .into()
     }
 }
 
@@ -106,18 +105,17 @@ impl CommandService for Hmexist {
         let table = self.table;
         let keys = self.keys;
 
-        let exists = keys.into_iter().map(|key| {
-            match store.contains(&table, &key) {
+        let exists = keys
+            .into_iter()
+            .map(|key| match store.contains(&table, &key) {
                 Ok(e) => e.into(),
                 Err(_) => Value::default(),
-            }
-        }).collect::<Vec<Value>>();
+            })
+            .collect::<Vec<Value>>();
 
         exists.into()
     }
 }
-
-
 
 #[cfg(test)]
 mod tests {
@@ -129,7 +127,7 @@ mod tests {
         let cmd = CommandRequest::new_hset("t1", "hello", "world".into());
         let res = dispatch(cmd.clone(), &store);
         assert_res_ok(res, &[Value::default()], &[]);
-        
+
         let res = dispatch(cmd, &store);
         assert_res_ok(res, &["world".into()], &[]);
     }
@@ -175,7 +173,6 @@ mod tests {
         assert_res_ok(res, &[], pairs);
     }
 
-
     #[test]
     fn hmset_should_work() {
         let store = MemTable::new();
@@ -185,12 +182,15 @@ mod tests {
             Kvpair::new("u3", 11.into()),
         ];
         let cmd = CommandRequest::new_hmset("score", pairs.into());
-        
-        
+
         let res = dispatch(cmd, &store);
-        
-        assert_res_ok(res, &[Value::default(), Value::default(), Value::default()], &[]);
-        
+
+        assert_res_ok(
+            res,
+            &[Value::default(), Value::default(), Value::default()],
+            &[],
+        );
+
         let cmd = CommandRequest::new_hgetall("score");
         let res = dispatch(cmd, &store);
         print!("{:?}", res)
@@ -211,7 +211,6 @@ mod tests {
         let cmd = CommandRequest::new_hmget("score", vec!["u1".into(), "u2".into(), "u3".into()]);
         let res = dispatch(cmd, &store);
         assert_res_ok(res, &[6.into(), 8.into(), 11.into()], &[]);
-
     }
 
     #[test]

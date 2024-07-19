@@ -3,8 +3,8 @@
 */
 pub mod abi;
 
-use abi::{command_request::RequestData, *};
 use crate::KvError;
+use abi::{command_request::RequestData, *};
 use http::StatusCode;
 
 impl CommandRequest {
@@ -77,7 +77,6 @@ impl CommandRequest {
         }
     }
 
-
     /// 创建 HEXIST 命令
     pub fn new_hexist(table: impl Into<String>, key: impl Into<String>) -> Self {
         Self {
@@ -97,10 +96,7 @@ impl CommandRequest {
             })),
         }
     }
-
-
 }
-
 
 impl Kvpair {
     /// 创建一个新的 kv pair
@@ -179,9 +175,6 @@ impl From<KvError> for CommandResponse {
 
         result
     }
-
-
-
 }
 
 /// 从 Vec<Value> 转换成 CommandResponse
@@ -195,12 +188,9 @@ impl From<Vec<Value>> for CommandResponse {
     }
 }
 
-
-
-
 /// 从 Vec<Value> 转换成 CommandResponse
 impl From<bool> for Value {
-    fn from(v:bool ) -> Self {
+    fn from(v: bool) -> Self {
         Self {
             value: Some(value::Value::Bool(v)),
         }

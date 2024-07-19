@@ -12,7 +12,6 @@ pub trait CommandService {
     fn execute(self, store: &impl Storage) -> CommandResponse;
 }
 
-
 /// Service 数据结构
 pub struct Service<Store = MemTable> {
     inner: Arc<ServiceInner<Store>>,
@@ -21,7 +20,7 @@ pub struct Service<Store = MemTable> {
 impl<Store> Clone for Service<Store> {
     fn clone(&self) -> Self {
         Self {
-      inner: Arc::clone(&self.inner),
+            inner: Arc::clone(&self.inner),
         }
     }
 }

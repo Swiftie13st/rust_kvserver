@@ -33,7 +33,6 @@ async fn main() -> Result<()> {
         info!("Got response {:?}", data);
     }
 
-
     let cmd_hgetall = CommandRequest::new_hgetall("table1");
     // 发送 HGETALL 命令
     client.send(cmd_hgetall).await?;
