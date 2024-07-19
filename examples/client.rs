@@ -5,7 +5,6 @@ use kv::{CommandRequest, CommandResponse};
 use tokio::net::TcpStream;
 use tracing::info;
 
-// 连接服务器的 9527 端口，发送一个 HSET 命令出去，然后等待服务器的响应。
 #[tokio::main]
 async fn main() -> Result<()> {
     tracing_subscriber::fmt::init();
@@ -23,6 +22,21 @@ async fn main() -> Result<()> {
 
     // 发送 HSET 命令
     client.send(cmd).await?;
+    if let Some(Ok(data)) = client.next().await {
+        info!("Got response {:?}", data);
+    }
+
+    let cmd_hget = CommandRequest::new_hget("table1", "hello");
+    // 发送 HGET 命令
+    client.send(cmd_hget).await?;
+    if let Some(Ok(data)) = client.next().await {
+        info!("Got response {:?}", data);
+    }
+
+
+    let cmd_hgetall = CommandRequest::new_hgetall("table1");
+    // 发送 HGETALL 命令
+    client.send(cmd_hgetall).await?;
     if let Some(Ok(data)) = client.next().await {
         info!("Got response {:?}", data);
     }

@@ -1,6 +1,6 @@
 mod memory;
 
-use memory::MemTable;
+pub use memory::MemTable;
 
 use crate::{KvError, Kvpair, Value};
 
@@ -19,6 +19,7 @@ pub trait Storage {
     /// 遍历 HashTable，返回 kv pair 的 Iterator
     fn get_iter(&self, table: &str) -> Result<Box<dyn Iterator<Item = Kvpair>>, KvError>;
 }
+
 #[cfg(test)]
 mod tests {
     use super::*;

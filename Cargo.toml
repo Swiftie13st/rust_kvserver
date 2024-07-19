@@ -10,6 +10,7 @@ tracing = "0.1" # 日志处理
 regex = { version = "1", features = ["unicode-case"] } # 启用 unicode-case 特性，不启用报错
 thiserror = "1" # 错误定义和处理
 dashmap = "6.0.1" # 并发 HashMap
+http = "1.1.0"
 
 
 [dev-dependencies]
