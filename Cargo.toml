@@ -11,6 +11,8 @@ regex = { version = "1", features = ["unicode-case"] } # 启用 unicode-case 特
 thiserror = "1" # 错误定义和处理
 dashmap = "6.0.1" # 并发 HashMap
 http = "1.1.0"
+sled = "0.34.7"
+tempfile = "3.10.1"
 
 
 [dev-dependencies]
